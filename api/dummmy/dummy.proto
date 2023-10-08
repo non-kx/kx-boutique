@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package api.dummmy;
+
+option go_package = "kx-boutique/api/dummmy;dummmy";
+option java_multiple_files = true;
+option java_package = "api.dummmy";
+
+service Dummy {
+	rpc CreateDummy (CreateDummyRequest) returns (CreateDummyReply);
+	rpc UpdateDummy (UpdateDummyRequest) returns (UpdateDummyReply);
+	rpc DeleteDummy (DeleteDummyRequest) returns (DeleteDummyReply);
+	rpc GetDummy (GetDummyRequest) returns (GetDummyReply);
+	rpc ListDummy (ListDummyRequest) returns (ListDummyReply);
+}
+
+message CreateDummyRequest {}
+message CreateDummyReply {}
+
+message UpdateDummyRequest {}
+message UpdateDummyReply {}
+
+message DeleteDummyRequest {}
+message DeleteDummyReply {}
+
+message GetDummyRequest {}
+message GetDummyReply {}
+
+message ListDummyRequest {}
+message ListDummyReply {}

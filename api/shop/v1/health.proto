@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kx-boutique/api/shop/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.shop.v1";
+
+service Health {
+	rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse) {
+		option (google.api.http) = {
+			get: "/health"
+		};
+	}
+}
+
+message HealthCheckRequest {}
+message HealthCheckResponse {
+	string message = 1;
+}

@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "kx-boutique/api/shop/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.shop.v1";
+
+service Products {
+	rpc GetProduct (GetProductRequest) returns (GetProductReply) {
+		option (google.api.http) = {
+			get: "/product/{id}"
+		};
+	}
+	rpc GetProductsPaginate (GetProductsPaginateRequest) returns (GetProductsPaginateReply) {
+		option (google.api.http) = {
+			get: "/product"
+		};
+	}
+}
+message Product {
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	optional string image_url = 4;
+}
+
+message GetProductRequest {
+	string id = 1[(validate.rules).string.min_len = 1];
+}
+message GetProductReply {
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	optional string image_url = 4;
+}
+
+message GetProductsPaginateRequest {
+	int64 page = 1;
+	int64 limit = 2;
+}
+message GetProductsPaginateReply {
+	repeated Product products = 1;
+	int64 page_count = 2;
+	int64 total_count = 3;
+}

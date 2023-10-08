@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+option go_package = "kx-boutique/api/shop/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.shop.v1";
+
+enum ErrorReason {
+	PRODUCT_NOT_FOUND = 0;
+}

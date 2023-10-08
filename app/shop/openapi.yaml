@@ -1,0 +1,102 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /health:
+        get:
+            tags:
+                - Health
+            operationId: Health_HealthCheck
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.shop.v1.HealthCheckResponse'
+    /product:
+        get:
+            tags:
+                - Products
+            operationId: Products_GetProductsPaginate
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.shop.v1.GetProductsPaginateReply'
+    /product/{id}:
+        get:
+            tags:
+                - Products
+            operationId: Products_GetProduct
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.shop.v1.GetProductReply'
+components:
+    schemas:
+        api.shop.v1.GetProductReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                imageUrl:
+                    type: string
+        api.shop.v1.GetProductsPaginateReply:
+            type: object
+            properties:
+                products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.shop.v1.Product'
+                pageCount:
+                    type: string
+                totalCount:
+                    type: string
+        api.shop.v1.HealthCheckResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+        api.shop.v1.Product:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                imageUrl:
+                    type: string
+tags:
+    - name: Health
+    - name: Products
