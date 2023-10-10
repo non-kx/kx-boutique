@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package api.email.v1;
+
+import "google/protobuf/any.proto";
+
+option go_package = "kx-boutique/api/email/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.email.v1";
+
+service Sender {
+	rpc SendMail (SendMailRequest) returns (SendMailReply);
+}
+
+message SendMailRequest {
+	string template = 1;
+	string to = 2;
+	google.protobuf.Any payload = 3;
+}
+message SendMailReply {
+	string message = 1;
+}

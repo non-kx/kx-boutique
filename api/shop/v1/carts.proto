@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package api.shop.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kx-boutique/api/shop/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.shop.v1";
+
+service Carts {
+	rpc GetCart (GetCartRequest) returns (GetCartReply) {
+		option (google.api.http) = {
+			get: "/cart/{user_id}"
+		};
+	}
+	rpc AddToCart (AddToCartReqeust) returns (AddToCartReply) {
+		option (google.api.http) = {
+			post: "/cart/{user_id}"
+			body: "item"
+		};
+	}
+}
+
+message Cart {
+	string user_id = 1;
+	repeated Item items = 2;
+}
+
+message Item {
+	string product_id = 1;
+	int64 qty = 2;
+}
+
+message GetCartRequest {
+	string user_id = 1;
+}
+message GetCartReply {
+	optional Cart cart = 1;
+}
+
+message AddToCartReqeust {
+	string user_id = 1;
+	Item item = 2;
+}
+message AddToCartReply {
+	string message = 1;
+}

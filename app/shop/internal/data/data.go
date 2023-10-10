@@ -29,17 +29,38 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
 
-	clientOptions := options.Client().ApplyURI(c.Database.Uri)
-	client, err := mongo.Connect(ctx, clientOptions)
+	mongodb, err := getMongoDB(c.Database.Uri, c.Database.DbName)
 	if err != nil {
 		log.Errorf("Failed connecting to mongodb: %v", err)
 		return nil, nil, err
 	}
 
-	db := client.Database(c.Database.DbName)
+	rediscli, err := getRedisCli(c.Redis.Addr, c.Redis.Pwd, int(c.Redis.Db))
 
 	return &Data{
-		db,
-		nil,
+		db:  mongodb,
+		rdb: rediscli,
 	}, cleanup, nil
+}
+
+func getMongoDB(uri string, name string) (*mongo.Database, error) {
+	opt := options.Client().ApplyURI(uri)
+	cli, err := mongo.Connect(ctx, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	db := cli.Database(name)
+
+	return db, nil
+}
+
+func getRedisCli(addr string, pwd string, db int) (*redis.Client, error) {
+	cli := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: pwd, // no password set
+		DB:       db,
+	})
+
+	return cli, nil
 }

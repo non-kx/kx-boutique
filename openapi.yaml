@@ -3,43 +3,16 @@
 
 openapi: 3.0.3
 info:
-    title: Products API
+    title: Carts API
     version: 0.0.1
 paths:
-    /product:
+    /cart/{userId}:
         get:
             tags:
-                - Products
-            operationId: Products_GetProductsPaginate
+                - Carts
+            operationId: Carts_GetCart
             parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: string
-                - name: limit
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetProductsPaginateReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /product/{id}:
-        get:
-            tags:
-                - Products
-            operationId: Products_GetProduct
-            parameters:
-                - name: id
+                - name: userId
                   in: path
                   required: true
                   schema:
@@ -50,7 +23,36 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/GetProductReply'
+                                $ref: '#/components/schemas/GetCartReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - Carts
+            operationId: Carts_AddToCart
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Item'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AddToCartReply'
                 default:
                     description: Default error response
                     content:
@@ -59,28 +61,25 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        GetProductReply:
+        AddToCartReply:
             type: object
             properties:
-                id:
+                message:
                     type: string
-                name:
-                    type: string
-                description:
-                    type: string
-                imageUrl:
-                    type: string
-        GetProductsPaginateReply:
+        Cart:
             type: object
             properties:
-                products:
+                userId:
+                    type: string
+                items:
                     type: array
                     items:
-                        $ref: '#/components/schemas/Product'
-                pageCount:
-                    type: string
-                totalCount:
-                    type: string
+                        $ref: '#/components/schemas/Item'
+        GetCartReply:
+            type: object
+            properties:
+                cart:
+                    $ref: '#/components/schemas/Cart'
         GoogleProtobufAny:
             type: object
             properties:
@@ -89,16 +88,12 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        Product:
+        Item:
             type: object
             properties:
-                id:
+                productId:
                     type: string
-                name:
-                    type: string
-                description:
-                    type: string
-                imageUrl:
+                qty:
                     type: string
         Status:
             type: object
@@ -117,4 +112,4 @@ components:
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: Products
+    - name: Carts

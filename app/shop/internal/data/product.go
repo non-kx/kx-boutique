@@ -102,7 +102,7 @@ func (r *productRepo) ListPaginate(ctx context.Context, page int64, limit int64)
 
 	bizproduct := make([]biz.Product, 0)
 	for _, prod := range products {
-		bizproduct = append(bizproduct, *prod.ToBizzProduct())
+		bizproduct = append(bizproduct, *prod.ToBizProduct())
 	}
 
 	return &biz.ProductsPaginate{

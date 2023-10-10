@@ -6,13 +6,13 @@ server:
     addr: 0.0.0.0:9000
     timeout: 1s
 data:
-  database:
-    driver: mongodb
-    uri: mongodb://localhost:27017
-    db_name: kx-boutique
+  smtp:
+    host: localhost
+    port: 1025
+    from: test@test.com
+    pwd: "$PWD"
+    templates_dir: ./app/email/templates
   redis:
     addr: 127.0.0.1:6379
-    pwd: ""
-    db: 0
     read_timeout: 0.2s
     write_timeout: 0.2s
