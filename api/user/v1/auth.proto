@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package api.user.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "kx-boutique/api/user/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.user.v1";
+
+service Auth {
+	rpc SignIn (SignInRequest) returns (SignInReply) {
+		option (google.api.http) = {
+			post: "/sign-in"
+			body: "*"
+		};
+	}
+	rpc SignUp (SignUpRequest) returns (SignUpReply) {
+		option (google.api.http) = {
+			post: "/sign-up"
+			body: "*"
+		};
+	}
+}
+
+message SignInRequest {
+	string username = 1[(validate.rules).string.min_len = 4];
+	string password = 2[(validate.rules).string.min_len = 6];
+}
+message SignInReply {
+	string token = 1;
+}
+
+message SignUpRequest {
+	string username = 1[(validate.rules).string.min_len = 4];
+	string password = 2[(validate.rules).string.min_len = 6];
+	string email = 3[(validate.rules).string.min_len = 3];
+}
+message SignUpReply {
+	string token = 1;
+}

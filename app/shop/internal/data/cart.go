@@ -33,7 +33,7 @@ func (r *cartRepo) GetUserCart(ctx context.Context, userId string) (*biz.Cart, e
 	raw, err := r.rdb.Get(ctx, getCartKey(userId)).Result()
 	if err != nil {
 		if err == redis.Nil {
-			return &biz.Cart{}, nil
+			return &biz.Cart{UserId: userId}, nil
 		}
 		return nil, err
 	}
@@ -52,6 +52,8 @@ func (r *cartRepo) UpdateUserCart(ctx context.Context, userId string, cart *biz.
 	if err != nil {
 		return err
 	}
+
+	r.log.WithContext(ctx).Debug("Update user[%v] cart: ", userId, string(raw))
 
 	err = r.rdb.Set(ctx, getCartKey(userId), raw, DEFUALT_TTL).Err()
 	if err != nil {

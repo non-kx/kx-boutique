@@ -12,7 +12,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewProductRepo)
+var ProviderSet = wire.NewSet(NewData, NewProductRepo, NewCartRepo)
 var collection *mongo.Collection
 var ctx = context.TODO()
 
@@ -31,7 +31,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 
 	mongodb, err := getMongoDB(c.Database.Uri, c.Database.DbName)
 	if err != nil {
-		log.Errorf("Failed connecting to mongodb: %v", err)
+		log.NewHelper(logger).Errorf("Failed connecting to mongodb: %v", err)
 		return nil, nil, err
 	}
 

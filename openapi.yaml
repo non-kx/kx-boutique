@@ -3,48 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Carts API
+    title: Auth API
     version: 0.0.1
 paths:
-    /cart/{userId}:
-        get:
-            tags:
-                - Carts
-            operationId: Carts_GetCart
-            parameters:
-                - name: userId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetCartReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+    /sign-in:
         post:
             tags:
-                - Carts
-            operationId: Carts_AddToCart
-            parameters:
-                - name: userId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
+                - Auth
+            operationId: Auth_SignIn
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/Item'
+                            $ref: '#/components/schemas/SignInRequest'
                 required: true
             responses:
                 "200":
@@ -52,7 +23,31 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/AddToCartReply'
+                                $ref: '#/components/schemas/SignInReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /sign-up:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_SignUp
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SignUpRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignUpReply'
                 default:
                     description: Default error response
                     content:
@@ -61,25 +56,6 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        AddToCartReply:
-            type: object
-            properties:
-                message:
-                    type: string
-        Cart:
-            type: object
-            properties:
-                userId:
-                    type: string
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Item'
-        GetCartReply:
-            type: object
-            properties:
-                cart:
-                    $ref: '#/components/schemas/Cart'
         GoogleProtobufAny:
             type: object
             properties:
@@ -88,12 +64,31 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        Item:
+        SignInReply:
             type: object
             properties:
-                productId:
+                token:
                     type: string
-                qty:
+        SignInRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        SignUpReply:
+            type: object
+            properties:
+                token:
+                    type: string
+        SignUpRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                email:
                     type: string
         Status:
             type: object
@@ -112,4 +107,4 @@ components:
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: Carts
+    - name: Auth

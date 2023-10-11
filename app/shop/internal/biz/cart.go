@@ -36,10 +36,11 @@ func NewCartUsecase(repo CartRepo, logger log.Logger) *CartUsecase {
 }
 
 func (uc *CartUsecase) GetUserCart(ctx context.Context, userId string) (*Cart, error) {
-	uc.log.WithContext(ctx).Infof("Get user[%v] cart: %v", userId)
+	uc.log.WithContext(ctx).Infof("Get user[%v] cart", userId)
 
 	cart, err := uc.repo.GetUserCart(ctx, userId)
 	if err != nil {
+		uc.log.WithContext(ctx).Errorf("Get user[%v] cart failed: %v", userId, err)
 		return nil, err
 	}
 
